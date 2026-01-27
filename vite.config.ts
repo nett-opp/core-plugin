@@ -4,7 +4,7 @@ import { fileURLToPath, URL } from "node:url";
 import path from "node:path";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { getConfig } from "./_build_helpers/getConfig";
-import { addHeaderToPHP } from "./_build_helpers/addHeaderToPHP";
+import { generatePHP } from "./_build_helpers/generatePHP";
 
 export default defineConfig((_config) => {
 	const config = getConfig(_config);
@@ -18,8 +18,8 @@ export default defineConfig((_config) => {
 						{
 							src: "php/plugin.php",
 							dest: "",
-							rename: `${config.pluginName}.php`,
-							transform: addHeaderToPHP(config),
+							rename: `${config.pluginNameSafe}.php`,
+							transform: generatePHP(config),
 						},
 						{
 							src: "php/includes",
@@ -51,7 +51,7 @@ export default defineConfig((_config) => {
 				output: {
 					...(config.isDev ? {} : { globals: { vue: "Vue" } }),
 					format: config.isDev ? "es" : "iife",
-					entryFileNames: `assets/${config.pluginName}.js`,
+					entryFileNames: "assets/app.js",
 				},
 			},
 		},
