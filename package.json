@@ -1,21 +1,30 @@
 {
   "name": "core-plugin",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nett-opp/core-plugin.git"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Emil Berberg Olsen",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/nett-opp/core-plugin/issues"
   },
-  "homepage": "https://github.com/nett-opp/core-plugin#readme"
+  "homepage": "https://github.com/nett-opp/core-plugin#readme",
+  "devDependencies": {
+    "@types/node": "^25.0.10",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vue/tsconfig": "^0.8.1",
+    "vite": "^7.3.1",
+    "vite-plugin-static-copy": "^3.2.0"
+  },
+  "dependencies": {
+    "vue": "^3.5.27"
+  }
 }
