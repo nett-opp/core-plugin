@@ -3,4 +3,5 @@
 <template>
     <img src="@/nett-opp-it-logo.png" alt="" />
     <p>Core Plugin</p>
+    <p>Simple plugin...</p>
 </template>

@@ -9,30 +9,33 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), "VITE_");
   const pluginName = env.VITE_PLUGIN_NAME || "my-plugin";
   return {
+    base: isDev ? "/" : "./",
     plugins: [
       vue(),
-      viteStaticCopy({
-        targets: [
-          {
-            src: "php/plugin.php",
-            dest: "",
-            rename: `${pluginName}.php`,
-          },
-          {
-            src: "php/includes",
-            dest: "",
-          },
-          ...(env.VITE_PLUGIN_INCLUDE_OPTIONAL_ASSETS === "true"
-            ? [
-                {
-                  src: "node_modules/vue/dist/vue.global.prod.js",
-                  dest: "assets",
-                },
-              ]
-            : []),
-        ],
-      }),
-    ],
+      !isDev &&
+        viteStaticCopy({
+          targets: [
+            {
+              src: "php/plugin.php",
+              dest: "",
+              rename: `${pluginName}.php`,
+            },
+            {
+              src: "php/includes",
+              dest: "",
+            },
+            ...(env.VITE_PLUGIN_INCLUDE_OPTIONAL_ASSETS === "true"
+              ? [
+                  {
+                    src: "node_modules/vue/dist/vue.global.prod.js",
+                    dest: "assets",
+                    rename: "vue.js",
+                  },
+                ]
+              : []),
+          ],
+        }),
+    ].filter(Boolean),
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
@@ -42,11 +45,11 @@ export default defineConfig(({ command, mode }) => {
       outDir: "plugin",
       emptyOutDir: true,
       rollupOptions: {
-        external: ["vue"],
+        external: isDev ? [] : ["vue"],
         input: path.resolve(__dirname, "src/main.ts"),
         output: {
-          globals: { vue: "Vue" },
-          format: "iife",
+          ...(isDev ? {} : { globals: { vue: "Vue" } }),
+          format: isDev ? "es" : "iife",
           entryFileNames: `assets/${pluginName}.js`,
         },
       },
