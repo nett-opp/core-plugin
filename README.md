@@ -14,6 +14,7 @@ This Vite configuration streamlines the creation of WordPress plugins with **Vue
 
 Before using this plugin setup, make sure your system has the following installed:
 
+- **IDE** – recommended code editors for development: VS Code or Zed.
 - **Git** – required to clone the repository and manage version control.
 - **Node.js** – used to run Vite and build the plugin. (Recommended version: 18.x or higher)
 - **npm** – package manager to install dependencies and run scripts. (Comes with Node.js)
