@@ -1,10 +1,4 @@
 <?php
-/**
- * Plugin Name: My Plugin
- * Description: Core plugin loading a Vue app in the WordPress admin.
- * Version: 1.0.0
- * Author: You
- */
 
 if (!defined("ABSPATH")) {
     exit();
@@ -26,7 +20,7 @@ function my_plugin_enqueue_admin_assets($hook)
             "vue",
             MY_PLUGIN_URL . "assets/vue.js",
             [],
-            null,
+            null, 
             true,
         );
     }

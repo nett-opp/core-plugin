@@ -1,65 +1,64 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
 import path from "node:path";
 import { viteStaticCopy } from "vite-plugin-static-copy";
+import { getConfig } from "./_build_helpers/getConfig";
+import { addHeaderToPHP } from "./_build_helpers/addHeaderToPHP";
 
-export default defineConfig(({ command, mode }) => {
-  const isDev = command === "serve";
-  const env = loadEnv(mode, process.cwd(), "VITE_");
-  const pluginName = env.VITE_PLUGIN_NAME || "my-plugin";
-  return {
-    base: isDev ? "/" : "./",
-    plugins: [
-      vue(),
-      !isDev &&
-        viteStaticCopy({
-          targets: [
-            {
-              src: "php/plugin.php",
-              dest: "",
-              rename: `${pluginName}.php`,
-            },
-            {
-              src: "php/includes",
-              dest: "",
-            },
-            ...(env.VITE_PLUGIN_INCLUDE_OPTIONAL_ASSETS === "true"
-              ? [
-                  {
-                    src: "node_modules/vue/dist/vue.global.prod.js",
-                    dest: "assets",
-                    rename: "vue.js",
-                  },
-                ]
-              : []),
-          ],
-        }),
-    ].filter(Boolean),
-    resolve: {
-      alias: {
-        "@": fileURLToPath(new URL("./src", import.meta.url)),
-      },
-    },
-    build: {
-      outDir: "plugin",
-      emptyOutDir: true,
-      rollupOptions: {
-        external: isDev ? [] : ["vue"],
-        input: path.resolve(__dirname, "src/main.ts"),
-        output: {
-          ...(isDev ? {} : { globals: { vue: "Vue" } }),
-          format: isDev ? "es" : "iife",
-          entryFileNames: `assets/${pluginName}.js`,
-        },
-      },
-    },
-    server: isDev
-      ? {
-          port: env.VITE_PLUGIN_PORT
-            ? parseInt(env.VITE_PLUGIN_PORT, 10)
-            : 3000,
-        }
-      : undefined,
-  };
+export default defineConfig((_config) => {
+	const config = getConfig(_config);
+	return {
+		base: config.isDev ? "/" : "./",
+		plugins: [
+			vue(),
+			!config.isDev &&
+				viteStaticCopy({
+					targets: [
+						{
+							src: "php/plugin.php",
+							dest: "",
+							rename: `${config.pluginName}.php`,
+							transform: addHeaderToPHP(config),
+						},
+						{
+							src: "php/includes",
+							dest: "",
+						},
+						...(config.includeOptionalAssets
+							? [
+									{
+										src: "node_modules/vue/dist/vue.global.prod.js",
+										dest: "assets",
+										rename: "vue.js",
+									},
+								]
+							: []),
+					],
+				}),
+		].filter(Boolean),
+		resolve: {
+			alias: {
+				"@": fileURLToPath(new URL("./src", import.meta.url)),
+			},
+		},
+		build: {
+			outDir: ".plugin",
+			emptyOutDir: true,
+			rollupOptions: {
+				external: config.isDev ? [] : ["vue"],
+				input: path.resolve(__dirname, "src/main.ts"),
+				output: {
+					...(config.isDev ? {} : { globals: { vue: "Vue" } }),
+					format: config.isDev ? "es" : "iife",
+					entryFileNames: `assets/${config.pluginName}.js`,
+				},
+			},
+		},
+		server: config.isDev
+			? {
+					port: config.port,
+				}
+			: undefined,
+	};
 });
