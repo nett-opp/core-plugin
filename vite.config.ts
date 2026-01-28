@@ -7,58 +7,47 @@ import { getConfig } from "./_build_helpers/getConfig";
 import { generatePHP } from "./_build_helpers/generatePHP";
 
 export default defineConfig((_config) => {
-	const config = getConfig(_config);
-	return {
-		base: config.isDev ? "/" : "./",
-		plugins: [
-			vue(),
-			!config.isDev &&
-				viteStaticCopy({
-					targets: [
-						{
-							src: "php/plugin.php",
-							dest: "",
-							rename: `${config.pluginNameSafe}.php`,
-							transform: generatePHP(config),
-						},
-						{
-							src: "php/includes",
-							dest: "",
-						},
-						...(config.includeOptionalAssets
-							? [
-									{
-										src: "node_modules/vue/dist/vue.global.prod.js",
-										dest: "assets",
-										rename: "vue.js",
-									},
-								]
-							: []),
-					],
-				}),
-		].filter(Boolean),
-		resolve: {
-			alias: {
-				"@": fileURLToPath(new URL("./src", import.meta.url)),
-			},
-		},
-		build: {
-			outDir: ".plugin",
-			emptyOutDir: true,
-			rollupOptions: {
-				external: config.isDev ? [] : ["vue"],
-				input: path.resolve(__dirname, "src/main.ts"),
-				output: {
-					...(config.isDev ? {} : { globals: { vue: "Vue" } }),
-					format: config.isDev ? "es" : "iife",
-					entryFileNames: `assets/${config.pluginNameSafe}.js`,
-				},
-			},
-		},
-		server: config.isDev
-			? {
-					port: config.port,
-				}
-			: undefined,
-	};
+  const config = getConfig(_config);
+  return {
+    base: config.isDev ? "/" : "./",
+    plugins: [
+      vue(),
+      !config.isDev &&
+        viteStaticCopy({
+          targets: [
+            {
+              src: "php/plugin.php",
+              dest: "",
+              rename: `${config.pluginSlug}.php`,
+              transform: generatePHP(config),
+            },
+            {
+              src: "php/includes",
+              dest: "",
+            },
+          ],
+        }),
+    ].filter(Boolean),
+    resolve: {
+      alias: {
+        "@": fileURLToPath(new URL("./src", import.meta.url)),
+      },
+    },
+    build: {
+      outDir: ".plugin",
+      emptyOutDir: true,
+      rollupOptions: {
+        input: path.resolve(__dirname, "src/main.ts"),
+        output: {
+          format: config.isDev ? "es" : "iife",
+          entryFileNames: `assets/${config.pluginSlug}.js`,
+        },
+      },
+    },
+    server: config.isDev
+      ? {
+          port: config.port,
+        }
+      : undefined,
+  };
 });
