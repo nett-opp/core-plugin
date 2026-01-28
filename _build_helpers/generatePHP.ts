@@ -22,7 +22,8 @@ if (!defined("ABSPATH")) exit;
 `;
 		const variables = [
 			`$plugin_config = [`,
-			`    'prefix' => '${config.pluginNameSafe}',`,
+			`    'prefix' => '${config.pluginPrefix}',`,
+			`    'slug' => '${config.pluginNameSafe}',`,
 			`    'menu_name' => '${config.pluginMenuName}',`,
 			`    'menu_capability' => '${config.pluginMenuCapability}',`,
 			`    'menu_position' => ${config.pluginMenuPosition},`,

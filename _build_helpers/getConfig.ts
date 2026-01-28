@@ -17,6 +17,7 @@ export type TConfig = {
 	parentMenuSlug: string | null;
 	pluginMenuCapability: string;
 	pluginMenuPosition: number;
+	pluginPrefix: string;
 };
 
 export function getConfig(config: ConfigEnv): TConfig {
@@ -38,5 +39,6 @@ export function getConfig(config: ConfigEnv): TConfig {
 		parentMenuSlug: env.VITE_PLUGIN_PARENT_MENU_SLUG || null,
 		pluginMenuCapability: env.VITE_PLUGIN_MENU_CAPABILITY || "manage_options",
 		pluginMenuPosition: env.VITE_PLUGIN_MENU_POSITION ? parseInt(env.VITE_PLUGIN_MENU_POSITION, 10) : 25,
+		pluginPrefix: env.VITE_PLUGIN_PREFIX || "g53a1b",
 	};
 }
