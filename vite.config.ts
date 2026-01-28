@@ -51,7 +51,7 @@ export default defineConfig((_config) => {
 				output: {
 					...(config.isDev ? {} : { globals: { vue: "Vue" } }),
 					format: config.isDev ? "es" : "iife",
-					entryFileNames: "assets/app.js",
+					entryFileNames: `assets/${config.pluginNameSafe}.js`,
 				},
 			},
 		},

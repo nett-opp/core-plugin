@@ -29,7 +29,7 @@ if (!defined("ABSPATH")) exit;
 			`    'parent_menu_slug' => ${config.parentMenuSlug ? `"${config.parentMenuSlug}"` : "null"},`,
 			`    'url' => plugin_dir_url(__FILE__),`,
 			`    'path' => plugin_dir_path(__FILE__),`,
-			`    'include_vue' => ${config.includeOptionalAssets ? "true" : "false"},`,
+			`    'app_path' => plugin_dir_path(__FILE__) . "assets/${config.pluginNameSafe}.js",`,
 			config.includeOptionalAssets
 				? `    'vue_path' => plugin_dir_path(__FILE__) . "assets/vue.js",`
 				: null,
