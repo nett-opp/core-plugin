@@ -35,7 +35,7 @@ To work on this project, you will need the following tools installed:
 
 Create a `.env` file in your project root to configure your plugin.
 
-### Core Plugin Settings
+### Plugin Settings
 
 | Variable                       | Description                                            | Default                  |
 | :----------------------------- | :----------------------------------------------------- | :----------------------- |
@@ -53,6 +53,18 @@ Create a `.env` file in your project root to configure your plugin.
 | `VITE_PLUGIN_URI`              | URL to the plugin homepage                             |                          |
 | `VITE_PLUGIN_AUTHOR`           | Plugin author name (appears in plugin list)            |                          |
 | `VITE_PLUGIN_AUTHOR_URI`       | Author website URL                                     |                          |
+
+# Folder structure after building
+
+```
+.plugin/
+├── assets/
+│   ├── my-plugin.css
+│   └── my-plugin.js
+├── includes/
+│   └── .gitkeep
+└── my-plugin.php
+```
 
 # Installation
 
