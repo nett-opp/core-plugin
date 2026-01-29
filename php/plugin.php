@@ -1,8 +1,4 @@
 <?php
-foreach (glob(plugin_dir_path(__FILE__) . "includes/*.php") as $file) {
-    require_once $file;
-}
-
 if ($plugin_config["parent_menu_slug"]) {
     add_action(
         "admin_menu",
