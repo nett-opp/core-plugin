@@ -10,12 +10,26 @@ A Vite-powered boilerplate for creating modern WordPress plugins with Vue 3 inte
 - Supports parent and child plugin structure.
 - Produces a clean, deployable plugin folder with minimal configuration.
 
-## Requirements
+## Development Environment Requirements
 
-- Node.js v18+
-- npm (comes with Node.js)
-- Git (for cloning and version control)
-- IDE (VS Code recommended)
+To work on this project, you will need the following tools installed:
+
+- **Node.js v18+**  
+  Node.js is required to run Vite, Vue, and other build tools.  
+  [Download Node.js](https://nodejs.org/) — choose the LTS version (v18 or higher).
+
+- **npm**  
+  Comes bundled with Node.js and is used to install packages.  
+  [npm Documentation](https://www.npmjs.com/)
+
+- **Git**  
+  Needed for cloning repositories and version control.  
+  [Download Git](https://git-scm.com/)
+
+- **IDE (Recommended: Visual Studio Code or Zed)**  
+  Ideal for JavaScript/TypeScript and Vue development.  
+  [Download VS Code](https://code.visualstudio.com/)  
+  [Download Zed](https://zed.dev/)
 
 ## Environment Variables
 
