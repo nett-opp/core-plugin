@@ -8,6 +8,9 @@ interface WPPost {
     link: string;
     date: string;
 }
+/*
+ * https://developer.wordpress.org/rest-api/reference/
+ */
 const posts = ref<WPPost[]>([]);
 onMounted(async () => {
     const WP_DATA = (window as any).WP_DATA;
