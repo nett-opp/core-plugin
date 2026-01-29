@@ -1,4 +1,4 @@
-# Core Plugin Starter for WordPress
+# Core Plugin for WordPress
 
 A Vite-powered boilerplate for creating modern WordPress plugins with Vue 3 interfaces. This setup streamlines development and produces a ready-to-deploy plugin folder with a single JS and CSS bundle.
 
