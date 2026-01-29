@@ -4,9 +4,10 @@ foreach (glob(plugin_dir_path(__FILE__) . "includes/*.php") as $file) {
 }
 
 if ($plugin_config["parent_menu_slug"]) {
-    add_action("admin_menu", function () use ($plugin_config) {
-        $render = fn() => print '<div class="wrap"><div id="app"></div></div>';
-        if ($plugin_config["parent_menu_slug"]) {
+    add_action(
+        "admin_menu",
+        function () use ($plugin_config) {
+            $render = fn() => print '<div class="wrap"><div id="app"></div></div>';
             add_submenu_page(
                 $plugin_config["parent_menu_slug"],
                 $plugin_config["menu_name"],
@@ -15,23 +16,28 @@ if ($plugin_config["parent_menu_slug"]) {
                 $plugin_config["slug"],
                 $render,
             );
-        }
-    });
+        },
+        20,
+    );
 }
 
 if (!$plugin_config["parent_menu_slug"]) {
-    add_action("admin_menu", function () use ($plugin_config) {
-        $render = fn() => print '<div class="wrap"><div id="app"></div></div>';
-        add_menu_page(
-            $plugin_config["menu_name"],
-            $plugin_config["menu_name"],
-            $plugin_config["menu_capability"],
-            $plugin_config["slug"],
-            $render,
-            "dashicons-admin-generic",
-            $plugin_config["menu_position"],
-        );
-    });
+    add_action(
+        "admin_menu",
+        function () use ($plugin_config) {
+            $render = fn() => print '<div class="wrap"><div id="app"></div></div>';
+            add_menu_page(
+                $plugin_config["menu_name"],
+                $plugin_config["menu_name"],
+                $plugin_config["menu_capability"],
+                $plugin_config["slug"],
+                $render,
+                "dashicons-admin-generic",
+                $plugin_config["menu_position"],
+            );
+        },
+        10,
+    );
 }
 
 // 2. Enqueue scripts (Kun én fil siden Vue er bundled)
