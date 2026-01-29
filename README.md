@@ -1,35 +1,44 @@
-# Plugin Core
+# Core Plugin Starter for WordPress
 
-This Vite configuration streamlines the creation of WordPress plugins with **Vue-powered interfaces** that can run on both the **frontend and backend**.
+A Vite-powered boilerplate for creating modern WordPress plugins with Vue 3 interfaces, supporting both admin dashboards and frontend components. This setup streamlines development and produces a ready-to-deploy plugin folder with a single JS and CSS bundle.
 
-**Features:**
+## Features
 
-- Supports **development** (with hot module replacement) and **production** (generates a deployable plugin folder) workflows.
-- Handles PHP files and optional assets automatically, including assets used by child plugins.
-- Allows **plugin customization** via environment variables.
-- Generates a **single JavaScript bundle** for your plugin and can optionally include the Vue runtime.
-- Produces a **clean, ready-to-use plugin structure** suitable for WordPress.
+- Fully integrates Vue 3 with WordPress.
+- Supports hot module replacement (HMR) during development.
+- Generates one JavaScript and one CSS file for production.
+- Supports parent and child plugin structure.
+- Produces a clean, deployable plugin folder with minimal configuration.
 
-# Requirements
+## Requirements
 
-Before using this plugin setup, make sure your system has the following installed:
+- Node.js v18+
+- npm (comes with Node.js)
+- Git (for cloning and version control)
+- IDE (VS Code recommended)
 
-- **IDE** – recommended code editors for development: VS Code or Zed.
-- **Git** – required to clone the repository and manage version control.
-- **Node.js** – used to run Vite and build the plugin. (Recommended version: 18.x or higher)
-- **npm** – package manager to install dependencies and run scripts. (Comes with Node.js)
+## Environment Variables
 
-# Environment Variables
+Create a `.env` file in your project root to configure your plugin.
 
-This plugin uses environment variables prefixed with `VITE_` to customize its behavior. The main variables include:
+### Core Plugin Settings
 
-| Variable                              | Description                                                                            | Default     |
-| ------------------------------------- | -------------------------------------------------------------------------------------- | ----------- |
-| `VITE_PLUGIN_NAME`                    | Sets the name of the plugin. This is used to rename the main PHP file and JS bundle.   | `my-plugin` |
-| `VITE_PLUGIN_PORT`                    | Sets the port for the development server.                                              | `3000`      |
-| `VITE_PLUGIN_INCLUDE_OPTIONAL_ASSETS` | If `true`, includes optional assets like the standalone Vue runtime for child plugins. | `false`     |
-
-> **Note:** All environment variables should be defined in a `.env` file at the root of your project.
+| Variable                       | Description                                            | Default                  |
+| :----------------------------- | :----------------------------------------------------- | :----------------------- |
+| `VITE_PLUGIN_NAME`             | Plugin name as shown in WordPress Plugins list         | My Plugin                |
+| `VITE_PLUGIN_SLUG`             | URL-friendly ID, used in slugs, handles, and filenames | my-plugin                |
+| `VITE_PLUGIN_VERSION`          | Plugin version for cache-busting assets                | 1.0.0                    |
+| `VITE_PLUGIN_DESCRIPTION`      | Description shown in the Plugins list                  | No description provided. |
+| `VITE_PLUGIN_TEXT_DOMAIN`      | Text domain for translations                           | my-plugin                |
+| `VITE_PLUGIN_DOMAIN_PATH`      | Relative path to translation files                     | /languages               |
+| `VITE_PLUGIN_MENU_NAME`        | Name shown in admin menu                               | my-plugin-menu           |
+| `VITE_PLUGIN_PARENT_MENU_SLUG` | Slug of parent menu if plugin is a submenu             | null                     |
+| `VITE_PLUGIN_MENU_CAPABILITY`  | Capability required to access plugin page              | manage_options           |
+| `VITE_PLUGIN_MENU_POSITION`    | Position in admin menu (important for top-level menus) | 25                       |
+| `VITE_PLUGIN_PORT`             | Port for Vite dev server                               | 3000                     |
+| `VITE_PLUGIN_URI`              | URL to the plugin homepage                             |                          |
+| `VITE_PLUGIN_AUTHOR`           | Plugin author name (appears in plugin list)            |                          |
+| `VITE_PLUGIN_AUTHOR_URI`       | Author website URL                                     |                          |
 
 # Installation
 
