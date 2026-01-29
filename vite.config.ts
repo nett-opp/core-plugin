@@ -1,53 +1,68 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { fileURLToPath, URL } from "node:url";
-import path from "node:path";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 import { getConfig } from "./_build_helpers/getConfig";
 import { generatePHP } from "./_build_helpers/generatePHP";
 
-export default defineConfig((_config) => {
-  const config = getConfig(_config);
+export default defineConfig((config) => {
+  const env = getConfig(config);
   return {
-    base: config.isDev ? "/" : "./",
-    plugins: [
-      vue(),
-      !config.isDev &&
-        viteStaticCopy({
-          targets: [
-            {
-              src: "php/plugin.php",
-              dest: "",
-              rename: `${config.pluginSlug}.php`,
-              transform: generatePHP(config),
-            },
-            {
-              src: "php/includes",
-              dest: "",
-            },
-          ],
-        }),
-    ].filter(Boolean),
     resolve: {
       alias: {
         "@": fileURLToPath(new URL("./src", import.meta.url)),
       },
     },
-    build: {
-      outDir: ".plugin",
-      emptyOutDir: true,
-      rollupOptions: {
-        input: path.resolve(__dirname, "src/main.ts"),
-        output: {
-          format: config.isDev ? "es" : "iife",
-          entryFileNames: `assets/${config.pluginSlug}.js`,
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `@use "@/styles/_variables.scss" as *;`,
         },
       },
     },
-    server: config.isDev
-      ? {
-          port: config.port,
-        }
-      : undefined,
+    ...(env.isDev
+      ? { base: "/", server: { port: env.port } }
+      : {
+          base: "./",
+          define: {
+            "process.env": {},
+          },
+          build: {
+            outDir: ".plugin",
+            emptyOutDir: true,
+            lib: {
+              entry: "src/main.ts",
+              name: "P_APP_Global",
+              formats: ["iife"],
+            },
+            rollupOptions: {
+              output: {
+                entryFileNames: `assets/${env.pluginSlug}.js`,
+                assetFileNames: `assets/${env.pluginSlug}.[ext]`,
+              },
+            },
+          },
+        }),
+    plugins: [
+      vue(),
+      ...(env.isDev
+        ? []
+        : [
+            viteStaticCopy({
+              targets: [
+                {
+                  src: "php/plugin.php",
+                  dest: "",
+                  rename: `${env.pluginSlug}.php`,
+                  transform: generatePHP(env),
+                },
+                {
+                  src: "php/includes",
+                  dest: "",
+                },
+              ],
+            }),
+          ]),
+    ],
   };
 });

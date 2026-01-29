@@ -27,9 +27,8 @@ if (!defined("ABSPATH")) exit;
       `    'menu_capability' => '${config.pluginMenuCapability}',`,
       `    'menu_position' => ${config.pluginMenuPosition},`,
       `    'parent_menu_slug' => ${config.parentMenuSlug ? `"${config.parentMenuSlug}"` : "null"},`,
-      `    'url' => plugin_dir_url(__FILE__),`,
-      `    'path' => plugin_dir_path(__FILE__),`,
-      `    'app_path' => plugin_dir_url(__FILE__) . "assets/${config.pluginSlug}.js",`,
+      `    'js_path' => plugin_dir_url(__FILE__) . "assets/${config.pluginSlug}.js",`,
+      `    'css_path' => plugin_dir_url(__FILE__) . "assets/${config.pluginSlug}.css",`,
       `];`,
     ].filter(Boolean);
 
