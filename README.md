@@ -2,6 +2,8 @@
 
 A Vite-powered boilerplate for creating modern WordPress plugins with Vue 3 interfaces. This setup streamlines development and produces a ready-to-deploy plugin folder with a single JS and CSS bundle.
 
+![Example Dashboard](https://raw.githubusercontent.com/nett-opp/core-plugin/refs/heads/main/screenshots/2026-01-30-104954.png?token=GHSAT0AAAAAADT4EZ2KMXJKEAR4EANMCHRQ2L4P6XA)
+
 ## Features
 
 - Fully integrates Vue 3 with WordPress.
