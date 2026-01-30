@@ -1,5 +1,9 @@
 <?php
 
+if (!defined("ABSPATH")) {
+    exit();
+}
+
 foreach (glob(plugin_dir_path(__FILE__) . "includes/*.php") as $file) {
     require_once $file;
 }

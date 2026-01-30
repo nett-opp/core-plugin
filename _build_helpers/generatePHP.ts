@@ -17,8 +17,6 @@ Author URI: ${config.pluginAuthorUri}
 Text Domain: ${config.textDomain}
 Domain Path: ${config.domainPath}
 */
-
-if (!defined("ABSPATH")) exit;
 `;
     const variables = [
       `$plugin_config = [`,
