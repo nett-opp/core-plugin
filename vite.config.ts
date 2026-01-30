@@ -28,8 +28,8 @@ export default defineConfig((config) => {
             "process.env": {},
           },
           build: {
-            outDir: ".plugin",
-            emptyOutDir: true,
+            outDir: `.plugins/${env.pluginSlug}`,
+            emptyOutDir: false,
             lib: {
               entry: "src/main.ts",
               name: "P_APP_Global",
