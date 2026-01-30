@@ -1,71 +1,100 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-console.log("env", import.meta.env);
-console.log("WP_DATA", (window as any).WP_DATA || {});
+
+// Typer for dataene
 interface WPPost {
     id: number;
     title: { rendered: string };
     link: string;
     date: string;
 }
-/*
- * https://developer.wordpress.org/rest-api/reference/
- */
+
 const posts = ref<WPPost[]>([]);
+const dummyMessage = ref("");
+const loading = ref(true);
+
 onMounted(async () => {
     const WP_DATA = (window as any).WP_DATA;
+
     if (!WP_DATA) {
-        console.warn("WP_DATA is not available. Are you in dev mode?");
+        console.warn(
+            "WP_DATA er ikke tilgjengelig. Sjekk admin_enqueue_scripts.",
+        );
         return;
     }
+
     try {
-        const response = await fetch(`${WP_DATA.restUrl}wp/v2/posts`, {
-            headers: {
-                "X-WP-Nonce": WP_DATA.nonce,
-            },
+        // 1. Hent posts (Standard)
+        const postRes = await fetch(`${WP_DATA.restUrl}wp/v2/posts`, {
+            headers: { "X-WP-Nonce": WP_DATA.nonce },
         });
-        if (!response.ok) throw new Error("Failed to fetch posts");
-        posts.value = await response.json();
-        console.log("Posts:", posts.value);
+        posts.value = await postRes.json();
+
+        // 2. Hent fra ditt nye custom endepunkt
+        const dummyRes = await fetch(`${WP_DATA.restUrl}custom/v1/dummy`, {
+            headers: { "X-WP-Nonce": WP_DATA.nonce },
+        });
+        const dummyData = await dummyRes.json();
+        dummyMessage.value = dummyData.message;
+
+        console.log("Custom API svar:", dummyData);
     } catch (error) {
-        console.error(error);
+        console.error("Kunne ikke hente data:", error);
+    } finally {
+        loading.value = false;
     }
 });
 </script>
 
 <template>
     <div class="plugin">
-        <img src="@/assets/nett-opp-it-logo.png" alt="" />
+        <img src="@/assets/nett-opp-it-logo.png" alt="Logo" />
         <h1>Core Plugin</h1>
-        <p>Open console (F12) for more info...</p>
+
+        <!-- Viser meldingen fra PHP custom endepunkt -->
+        <p v-if="dummyMessage" class="api-msg">
+            Melding fra API: {{ dummyMessage }}
+        </p>
+
+        <p>Åpne konsollen (F12) for mer info...</p>
         <hr />
-        <div v-if="posts.length" style="width: 100%">
-            <table border="1" cellpadding="8" cellspacing="0">
+
+        <div v-if="!loading" style="width: 100%">
+            <table v-if="posts.length">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Title</th>
-                        <th>Link</th>
-                        <th>Date</th>
+                        <th>Tittel</th>
+                        <th>Lenke</th>
+                        <th>Dato</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="post in posts" :key="post.id">
                         <td data-label="ID">{{ post.id }}</td>
-                        <td data-label="Title">{{ post.title.rendered }}</td>
-                        <td data-label="Link">
-                            <a :href="post.link" target="_blank">View Post</a>
+                        <td
+                            data-label="Tittel"
+                            v-html="post.title.rendered"
+                        ></td>
+                        <td data-label="Lenke">
+                            <a
+                                :href="post.link"
+                                target="_blank"
+                                class="button button-small"
+                                >Se innlegg</a
+                            >
                         </td>
-                        <td data-label="Date">
+                        <td data-label="Dato">
                             {{ new Date(post.date).toLocaleDateString() }}
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <p v-else>Ingen innlegg funnet.</p>
         </div>
 
         <div v-else>
-            <p>Loading posts...</p>
+            <p>Laster innlegg...</p>
         </div>
     </div>
 </template>
@@ -80,6 +109,14 @@ onMounted(async () => {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
+
+    .api-msg {
+        background: #e7f3ff;
+        padding: 10px;
+        border-radius: 5px;
+        color: #007acc;
+        font-weight: bold;
+    }
 
     img {
         width: 200px;

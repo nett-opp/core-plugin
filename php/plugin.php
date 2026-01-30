@@ -1,4 +1,9 @@
 <?php
+
+foreach (glob(plugin_dir_path(__FILE__) . "includes/*.php") as $file) {
+    require_once $file;
+}
+
 if ($plugin_config["parent_menu_slug"]) {
     add_action(
         "admin_menu",
@@ -36,26 +41,23 @@ if (!$plugin_config["parent_menu_slug"]) {
     );
 }
 
-// 2. Enqueue scripts (Kun én fil siden Vue er bundled)
 add_action("admin_enqueue_scripts", function ($hook) use ($plugin_config) {
-    // Sjekk om vi er på siden til denne utvidelsen
-    if (!str_contains($hook, $plugin_config["slug"])) {
+    $current_page = isset($_GET["page"]) ? $_GET["page"] : "";
+    if ($current_page !== $plugin_config["slug"]) {
         return;
     }
-
-    // Last den bundlede app-filen
     wp_enqueue_script(
         $plugin_config["slug"] . "-app",
         $plugin_config["js_path"],
-        [], // Ingen eksterne dependencies lenger
-        time(), // Cache-busting
+        [],
+        time(),
         true,
     );
     wp_enqueue_style(
         $plugin_config["slug"] . "-style",
-        $plugin_config["css_path"], // CSS path from your config
-        [], // Ingen dependencies
-        time(), // Cache-busting
+        $plugin_config["css_path"],
+        [],
+        time(),
     );
     wp_localize_script($plugin_config["slug"] . "-app", "WP_DATA", [
         "restUrl" => rest_url(),

@@ -31,12 +31,6 @@ if (!defined("ABSPATH")) exit;
       `    'css_path' => plugin_dir_url(__FILE__) . "assets/${config.pluginSlug}.css",`,
       `];`,
     ];
-
-    const autoRequireIncludes = `
-foreach (glob(plugin_dir_path(__FILE__) . "includes/*.php") as $file) {
-    require_once $file;
-}
-`;
-    return `${tag}\n${header}\n${variables.join("\n")}\n${autoRequireIncludes}\n${content}`;
+    return `${tag}\n${header}\n${variables.join("\n")}\n\n${content}`;
   };
 }
