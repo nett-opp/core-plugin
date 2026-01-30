@@ -17,10 +17,13 @@ Author URI: ${config.pluginAuthorUri}
 Text Domain: ${config.textDomain}
 Domain Path: ${config.domainPath}
 */
+
+if (!defined("ABSPATH")) exit;
 `;
     const variables = [
       `$plugin_config = [`,
       `    'slug' => '${config.pluginSlug}',`,
+      `    'version' => '${config.pluginVersion}',`,
       `    'menu_name' => '${config.pluginMenuName}',`,
       `    'menu_capability' => '${config.pluginMenuCapability}',`,
       `    'menu_position' => ${config.pluginMenuPosition},`,
