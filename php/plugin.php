@@ -6,16 +6,27 @@ if (!defined($clean_prefix)) {
     define($clean_prefix, true);
 }
 
-register_activation_hook(__FILE__, function () use ($plugin_config) {
+register_activation_hook(plugin_basename(__FILE__), function () use (
+    $plugin_config,
+) {
     do_action($plugin_config["slug"] . "_activated");
 });
 
-register_deactivation_hook(__FILE__, function () use ($plugin_config) {
+register_deactivation_hook(plugin_basename(__FILE__), function () use (
+    $plugin_config,
+) {
     do_action($plugin_config["slug"] . "_deactivated");
 });
 
-foreach (glob(plugin_dir_path(__FILE__) . "includes/*.php") as $file) {
-    require_once $file;
+$dir = plugin_dir_path(__FILE__) . "includes";
+if (is_dir($dir)) {
+    $iterator = new RecursiveIteratorIterator(
+        new RecursiveDirectoryIterator($dir),
+    );
+    $files = new RegexIterator($iterator, '/\.php$/');
+    foreach ($files as $file) {
+        require_once $file->getPathname();
+    }
 }
 
 if ($plugin_config["parent_menu_slug"]) {
